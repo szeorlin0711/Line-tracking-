@@ -157,7 +157,7 @@ def main():
         # --- CALIBRATION USING THE range_finder MODULE ---
         print(f"Calibrating in {range_filter} color space...")
         color_ranges = {}
-        for color in ['red', 'blue', 'green']:
+        for color in ['red', 'blue', 'green', 'yellow']:
             print(f"Calibrating {color.capitalize()} color...")
             ret, frame = cap.read()
             if not ret:
@@ -175,16 +175,18 @@ def main():
         print("No calibration data available. Exiting.")
         return
 
-    # Prompt user to select one of the color ranges
+    # Prompt user to select one of the color ranges initially
     color_names = list(color_ranges.keys())
     print("\nChoose a color range:")
     for i, color in enumerate(color_names, 1):
         lower, upper = color_ranges[color]
         print(f"{i}: {color.capitalize()} -> {lower} to {upper}")
 
-    while True:
+    selected_color = None
+
+    while selected_color is None:
         try:
-            selection = int(input(f"Enter the number (1 for Red, 2 for Blue, 3 for Green) of the color range to use: ").strip())
+            selection = int(input(f"Enter the number (1 for Red, 2 for Blue, 3 for Green, 4 for yellow) of the color range to use: ").strip())
             if 1 <= selection <= len(color_names):
                 selected_color = color_names[selection - 1]
                 lower, upper = color_ranges[selected_color]
@@ -215,6 +217,28 @@ def main():
         cmd_vel_pub.publish(twist_msg)
         print(f"Published Twist: linear={v}, angular={w}")
 
+        #listen for 'c' to change color range
+        key = cv2.waitKey(1) & 0xFF
+        if key == ord('c'): #press c to change the color
+            print("\nChoose a new color range:")
+            for i, color in enumerate(color_names, 1):
+                lower, upper = color_ranges[color]
+                print(f"{i}: {color.capitalize()} -> {lower} to {upper}")
+            
+            #prompt user to select a new color range
+            selected_color = None
+            while selected_color is None:
+                try:
+                    selection = int(input(f"Enter the number (1 for Red, 2 for Blue, 3 for Green, 4 for yellow) of the color range to use: ").strip())
+                    if 1 <= selection <= len(color_names):
+                        selected_color = color_names[selection - 1]
+                        lower, upper = color_ranges[selected_color]
+                        print(f"Using {selected_color.capitalize()} color range: lower={lower}, upper={upper}")
+                    else:
+                        print("Invalid selection. Please enter valid selection")
+                except ValueError:
+                    print("Invalid input. Please enter a number.")
+
         # Press 'q' to quit.
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
@@ -226,3 +250,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

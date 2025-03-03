@@ -1,11 +1,24 @@
-Uses OpenCV to threshold, track lines, and publish command velocities to ROS TurtleSim. 
-Upon running "line_tracker.launch" for the first time, TurtleSim will open as well as the color thresholding calibration.
-During calibration you will be prompted to threshold for each color listed (you can swap between an HSV or BGR color space by pressing 's'). Press space-bar after you are done thresholding for each color.
-Once calibration is complete, you will be prombeted to select a color to track.
-(If this package has been run before and calibration was completed, you will be given the option to use the previous thresholding data and skip calibration or calibrate again.)
-After the desired color has been selected, "ROS_line_tracker.py" will calculate and publish linear and angular command velocities to the "/cmd_vel" ROS topic.
-"turtle_sub.py" will subscribe to the "/cmd_vel" topic and forawrd the data to TurtleSim.
+# LineTracker
+![Python](https://img.shields.io/badge/Python-3.x-blue) 
+![ROS](https://img.shields.io/badge/ROS-Noetic-brightgreen)
 
-While program is running, you can change the color you want tracked by pressing 'c' (must click on "line_tracking" window first) then enter the new color into the prompt on the terminal.
+A ROS node that uses OpenCV to detect and track a line of a decided color and contols a TurtleSim with published command velocities.
 
-If you want to calibrate more colors, add them into line 160 then edit line 189 and 232 accordingly.
+## Overview
+This ROS node:
+1. Thresholds color ranges set by the user to enable precise detection of differntly colored lines.
+2. Calculates command velocities based on the live video feed.
+3. Publishes calcutated command velocities to a TurtleSim subscriber.
+4. Forwards the velocities to the TurtleSim robot to control it.
+5. Allows for easy recalibration and interchanging of tracked colors.
+
+## Directions
+1. Put the files into a catkin workspace package.
+2. Launch the launch file.
+3. Calibrate the color ranges using the thresholding script in your desired color space (HSV/BGR).
+4. Enter desired color to track into the terminal prompt.
+5. Watch the turtle go.
+
+**Extras**
+- After the script has been run once, you can skip the calibration step and select a color range from the previous data.
+- Pres 'c' on the "Line Tracking" window and select a different color in the terminal prompt to change the color being tracked without restarting the program. 

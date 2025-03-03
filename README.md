@@ -6,7 +6,6 @@ Once calibration is complete, you will be prombeted to select a color to track.
 After the desired color has been selected, "ROS_line_tracker.py" will calculate and publish linear and angular command velocities to the "/cmd_vel" ROS topic.
 "turtle_sub.py" will subscribe to the "/cmd_vel" topic and forawrd the data to TurtleSim.
 
-The names of the colors can be easily changed as they are assigned to numbers for selection.
-Adding more color options should be rather simple.
+While program is running, you can change the color you want tracked by pressing 'c' (must click on "line_tracking" window first) then enter the new color into the prompt on the terminal.
 
-Will try and add ability to change tracked color without having to restart program.
+If you want to calibrate more colors, add them into line 160 then edit line 189 and 232 accordingly.

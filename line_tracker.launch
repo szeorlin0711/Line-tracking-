@@ -1,0 +1,10 @@
+<launch>
+    <!-- Start the line follower node -->
+    <node name="line_follower" pkg="rob134" type="ROS_line_tracker.py" output="screen"/>
+
+    <!-- Launch TurtleSim -->
+    <node name="turtlesim" pkg="turtlesim" type="turtlesim_node" output="screen"/>
+
+    <!-- launch the subscriber node that moves TurtleSim -->
+    <node name="turtle_cmd_vel_listener" pkg="rob134" type="turtle_sub.py" output="screen"/>
+</launch>
